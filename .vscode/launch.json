@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "args": ["--cfg", "configs/darknet19_sex-age.yaml"],
+            "args": ["--cfg", "configs/darknet19_tiny-imagenet.yaml"],
             "console": "integratedTerminal"
         }
     ]
