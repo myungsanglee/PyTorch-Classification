@@ -24,18 +24,15 @@ class _VGG(nn.Module):
         self.features = self._make_layers(cfg, batch_norm)
 
         self.classifier = nn.Sequential(
-            Conv2dBnRelu(512, 1280, 1),
+            Conv2dBnRelu(512, num_classes, 1),
             nn.AdaptiveAvgPool2d(1),
-            nn.Conv2d(1280, num_classes, 1)
+            nn.Flatten()
         )
 
     def forward(self, x):
         x = self.features(x)
-        pred = self.classifier(x)
-        b, c, _, _ = pred.size()
-        pred = pred.view(b, c)
-
-        return {'pred': pred}
+        x = self.classifier(x)
+        return x
 
     def _make_layers(self, cfg, batch_norm):
         layers = []
@@ -84,9 +81,3 @@ if __name__ == '__main__':
     #                 break
 
     # torchsummary.summary(model, (3, 64, 64), batch_size=1, device='cpu')
-
-    from torchvision import models
-
-    model =models.resnet50()
-    model = nn.Sequential(*list(model.children())[:-2])
-    torchsummary.summary(model, (3, 224, 224), batch_size=1, device='cpu')

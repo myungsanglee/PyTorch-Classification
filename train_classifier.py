@@ -43,12 +43,6 @@ def train(cfg):
         cfg=cfg
     )
 
-    # model_module = Classifier.load_from_checkpoint(
-    #     checkpoint_path='',
-    #     model=model,
-    #     cfg=cfg
-    # )
-
     callbacks = [
         LearningRateMonitor(logging_interval='epoch'),
         ModelCheckpoint(

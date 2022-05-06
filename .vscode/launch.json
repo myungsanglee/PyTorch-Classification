@@ -5,11 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Train Classifier",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "args": ["--cfg", "configs/darknet19_tiny-imagenet.yaml"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Test Classifier",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": ["--cfg", "configs/darknet19_tiny-imagenet.yaml", "--ckpt", "saved/darknet19_tiny-imagenet/version_0/checkpoints/epoch=914-step=1430144.ckpt"],
             "console": "integratedTerminal"
         }
     ]

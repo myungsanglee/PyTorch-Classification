@@ -63,8 +63,8 @@ class TinyImageNet(pl.LightningDataModule):
             albumentations.Blur(),
             albumentations.ShiftScaleRotate(),
             albumentations.GaussNoise(),
-            albumentations.Cutout(),
-            albumentations.ElasticTransform(),
+            albumentations.Cutout(max_h_size=int(self.input_size*0.125), max_w_size=int(self.input_size*0.125)),
+            # albumentations.ElasticTransform(),
             albumentations.RandomResizedCrop(self.input_size, self.input_size, (0.8, 1)),
             albumentations.Normalize(0, 1),
             albumentations.pytorch.ToTensorV2(),
@@ -110,46 +110,65 @@ class TinyImageNet(pl.LightningDataModule):
 
 
 if __name__ == '__main__':
-    # test_transform = albumentations.Compose([
-    #     albumentations.HorizontalFlip(),
-    #     albumentations.Blur(),
-    #     albumentations.ShiftScaleRotate(),
-    #     albumentations.GaussNoise(),
-    #     albumentations.Cutout(),
-    #     albumentations.PiecewiseAffine(),
-    #     albumentations.Normalize(0, 1),
-    #     albumentations.pytorch.ToTensorV2(),
-    # ],)
+    input_size = 64
 
-    test_transform = albumentations.Compose([
+    train_transform = albumentations.Compose([
+        albumentations.HorizontalFlip(),
+        albumentations.Blur(),
+        albumentations.ShiftScaleRotate(),
+        albumentations.GaussNoise(),
+        albumentations.Cutout(max_h_size=int(input_size*0.125), max_w_size=int(input_size*0.125)),
+        # albumentations.ElasticTransform(),
+        albumentations.RandomResizedCrop(input_size, input_size, (0.8, 1)),
         albumentations.Normalize(0, 1),
         albumentations.pytorch.ToTensorV2(),
     ],)
 
-    loader = DataLoader(
+    origin_transform = albumentations.Compose([
+        albumentations.Resize(input_size, input_size, always_apply=True),
+        albumentations.Normalize(0, 1),
+        albumentations.pytorch.ToTensorV2(),
+    ],)
+
+    train_loader = DataLoader(
         TinyImageNetDataset(
             dataset_dir='/home/fssv2/myungsang/datasets/tiny_imagenet/tiny-imagenet-200',
-            transforms=test_transform,
-            is_train=False
+            transforms=train_transform,
+            is_train=True
         ),
         batch_size=1,
-        shuffle=True
+        shuffle=False
+    )
+
+    origin_loader = DataLoader(
+        TinyImageNetDataset(
+            dataset_dir='/home/fssv2/myungsang/datasets/tiny_imagenet/tiny-imagenet-200',
+            transforms=origin_transform,
+            is_train=True
+        ),
+        batch_size=1,
+        shuffle=False
     )
 
     label_name_path = '/home/fssv2/myungsang/datasets/tiny_imagenet/tiny-imagenet-200/tiny-imagenet.names'
     with open(label_name_path, 'r') as f:
         label_name_list = f.read().splitlines()
 
-    for sample in loader:
-        batch_x, batch_y = sample
+    for train_sample, origin_sample in zip(train_loader, origin_loader):
+        train_x, train_y = train_sample
 
-        img = batch_x[0].numpy()   
+        img = train_x[0].numpy()   
         img = (np.transpose(img, (1, 2, 0))*255.).astype(np.uint8).copy()
 
-        print(batch_x.size())
-        print(f'label: {label_name_list[batch_y[0]]}')
+        origin_x, origin_y = origin_sample
+        origin_img = origin_x[0].numpy()
+        origin_img = (np.transpose(origin_img, (1, 2, 0))*255.).astype(np.uint8).copy()
 
-        cv2.imshow('sample', img)
+        # print(batch_x.size())
+        print(f'label: {label_name_list[train_y[0]]}\n')
+
+        cv2.imshow('Train', img)
+        cv2.imshow('Origin', origin_img)
         key = cv2.waitKey(0)
         if key == 27:
             break
