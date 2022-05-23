@@ -18,6 +18,7 @@
             "request": "launch",
             "program": "${file}",
             "args": ["--cfg", "configs/darknet19_tiny-imagenet.yaml", "--ckpt", "saved/darknet19_tiny-imagenet/version_0/checkpoints/epoch=914-step=1430144.ckpt"],
+            // "args": ["--cfg", "configs/darknet19_tiny-imagenet.yaml", "--ckpt", "saved/darknet19_tiny-imagenet/version_1/checkpoints/epoch=224-step=351674.ckpt"],
             "console": "integratedTerminal"
         }
     ]
