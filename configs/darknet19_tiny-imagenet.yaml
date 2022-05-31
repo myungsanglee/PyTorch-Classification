@@ -22,22 +22,26 @@ trainer_options:
 #     - 'SWA'
 
 accelerator: 'gpu' # 'auto', 'gpu', 'cpu'
-devices: [0] # 'auto': use all, [0]: use 0 gpu, [0, 1]: use 0, 1 gpus
+devices: [1] # 'auto': use all, [0]: use 0 gpu, [0, 1]: use 0, 1 gpus
 
-optimizer: 'adam'
-optimizer_options:
-  lr: 1e-3
-  weight_decay: 1e-5
+# optimizer: 'adam'
+# optimizer_options:
+#   lr: 1e-3
+#   weight_decay: 1e-5
 
 # optimizer: 'radam'
 # optimizer_options:
 #   lr: 1e-3
 #   weight_decay: 1e-5
 
+optimizer: 'adamw'
+optimizer_options:
+  lr: 0
+  weight_decay: 1e-5
+
 # optimizer: 'sgd'
 # optimizer_options:
 #   lr: 1e-3
-#   nesterov: true
 #   momentum: 0.9
 #   weight_decay: 1e-5
 
@@ -52,10 +56,10 @@ optimizer_options:
 #   T_mult: 2
 #   eta_min: 1e-3
 
-# scheduler: 'cosine_annealing_warm_up_restarts'
-# scheduler_options:
-#   T_0: 100
-#   T_mult: 2
-#   eta_max: 1e-1
-#   T_up: 10
-#   gamma: 0.8
+scheduler: 'cosine_annealing_warm_up_restarts'
+scheduler_options:
+  T_0: 100
+  T_mult: 2
+  eta_max: 1e-3
+  T_up: 10
+  gamma: 0.96

@@ -55,7 +55,8 @@ class Classifier(pl.LightningModule):
             return {
                 "optimizer": optim,
                 "lr_scheduler": {
-                    "scheduler": scheduler
+                    "scheduler": scheduler,
+                    "interval": "step"
                 }
             } 
         

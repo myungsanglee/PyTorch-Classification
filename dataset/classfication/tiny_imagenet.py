@@ -5,8 +5,8 @@ sys.path.append(os.getcwd())
 
 from torch.utils.data import Dataset, DataLoader
 import pytorch_lightning as pl
-import albumentations
-import albumentations.pytorch
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
 import cv2
 import numpy as np
 
@@ -58,22 +58,28 @@ class TinyImageNet(pl.LightningDataModule):
         self.input_size = input_size
         
     def setup(self, stage=None):
-        train_transforms = albumentations.Compose([
-            albumentations.HorizontalFlip(),
-            albumentations.Blur(),
-            albumentations.ShiftScaleRotate(),
-            albumentations.GaussNoise(),
-            albumentations.Cutout(max_h_size=int(self.input_size*0.125), max_w_size=int(self.input_size*0.125)),
-            # albumentations.ElasticTransform(),
-            albumentations.RandomResizedCrop(self.input_size, self.input_size, (0.8, 1)),
-            albumentations.Normalize(0, 1),
-            albumentations.pytorch.ToTensorV2(),
+        train_transforms = A.Compose([
+            A.HorizontalFlip(),
+            A.VerticalFlip(),
+            A.Blur(),
+            A.CLAHE(),
+            A.ColorJitter(
+                brightness=0.5,
+                contrast=0.2,
+                saturation=0.5,
+                hue=0.1
+            ),
+            A.ShiftScaleRotate(),
+            A.Cutout(max_h_size=int(self.input_size*0.125), max_w_size=int(self.input_size*0.125)),
+            A.RandomResizedCrop(self.input_size, self.input_size, (0.8, 1)),
+            A.Normalize(0, 1),
+            ToTensorV2(),
         ],)
 
-        valid_transform = albumentations.Compose([
-            albumentations.Resize(self.input_size, self.input_size, always_apply=True),
-            albumentations.Normalize(0, 1),
-            albumentations.pytorch.ToTensorV2(),
+        valid_transform = A.Compose([
+            A.Resize(self.input_size, self.input_size, always_apply=True),
+            A.Normalize(0, 1),
+            ToTensorV2(),
         ],)
 
         self.train_dataset = TinyImageNetDataset(
@@ -112,22 +118,22 @@ class TinyImageNet(pl.LightningDataModule):
 if __name__ == '__main__':
     input_size = 64
 
-    train_transform = albumentations.Compose([
-        albumentations.HorizontalFlip(),
-        albumentations.Blur(),
-        albumentations.ShiftScaleRotate(),
-        albumentations.GaussNoise(),
-        albumentations.Cutout(max_h_size=int(input_size*0.125), max_w_size=int(input_size*0.125)),
+    train_transform = A.Compose([
+        A.HorizontalFlip(),
+        A.Blur(),
+        A.ShiftScaleRotate(),
+        A.GaussNoise(),
+        A.Cutout(max_h_size=int(input_size*0.125), max_w_size=int(input_size*0.125)),
         # albumentations.ElasticTransform(),
-        albumentations.RandomResizedCrop(input_size, input_size, (0.8, 1)),
-        albumentations.Normalize(0, 1),
-        albumentations.pytorch.ToTensorV2(),
+        A.RandomResizedCrop(input_size, input_size, (0.8, 1)),
+        A.Normalize(0, 1),
+        ToTensorV2(),
     ],)
 
-    origin_transform = albumentations.Compose([
-        albumentations.Resize(input_size, input_size, always_apply=True),
-        albumentations.Normalize(0, 1),
-        albumentations.pytorch.ToTensorV2(),
+    origin_transform = A.Compose([
+        A.Resize(input_size, input_size, always_apply=True),
+        A.Normalize(0, 1),
+        ToTensorV2(),
     ],)
 
     train_loader = DataLoader(

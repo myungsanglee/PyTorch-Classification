@@ -3,7 +3,7 @@ import platform
 
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
-from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint, StochasticWeightAveraging, QuantizationAwareTraining
+from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint, StochasticWeightAveraging, QuantizationAwareTraining, EarlyStopping
 from pytorch_lightning.plugins import DDPPlugin
 import torchsummary
 
@@ -49,6 +49,11 @@ def train(cfg):
             monitor='val_loss', 
             save_last=True, 
             every_n_epochs=cfg['save_freq']
+        ),
+        EarlyStopping(
+            monitor='val_loss',
+            patience=20,
+            verbose=True
         )
     ]
 
