@@ -1,6 +1,5 @@
 import pytorch_lightning as pl
-import torch
-import torch.nn.functional as F
+from torch import nn
 from torchmetrics import Accuracy
 
 from utils.module_select import get_optimizer, get_scheduler
@@ -13,7 +12,8 @@ class Classifier(pl.LightningModule):
         self.save_hyperparameters(ignore='model')
         self.top_1 = Accuracy(top_k=1)
         self.top_5 = Accuracy(top_k=5)
-        self.focal_loss = FocalLoss(reduction='mean')
+        # self.focal_loss = FocalLoss(reduction='mean')
+        self.ce_loss = nn.CrossEntropyLoss()
 
     def forward(self, x):
         predictions = self.model(x)
@@ -22,7 +22,7 @@ class Classifier(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         y_pred = self.model(x)
-        loss = self.focal_loss(y_pred, y)
+        loss = self.ce_loss(y_pred, y)
 
         self.log('train_loss', loss, prog_bar=True, logger=True, on_epoch=True, on_step=False)
         # self.log('train_top1', self.top_1(y_pred, y), logger=True, on_epoch=True, on_step=False)
@@ -33,7 +33,7 @@ class Classifier(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         x, y = batch
         y_pred = self.model(x)
-        loss = self.focal_loss(y_pred, y)
+        loss = self.ce_loss(y_pred, y)
 
         self.log('val_loss', loss, prog_bar=True, logger=True, on_epoch=True, on_step=False)
         self.log('val_top1', self.top_1(y_pred, y), logger=True, on_epoch=True, on_step=False)

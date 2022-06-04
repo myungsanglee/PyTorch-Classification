@@ -60,6 +60,8 @@ class _Darknet19(nn.Module):
         self.layer4 = self._make_layers(layer4)
         self.layer5 = self._make_layers(layer5)
 
+        self.dropout = nn.Dropout()
+
         self.classifier = nn.Sequential(
             Conv2dBnRelu(1024, num_classes, 1),
             nn.AdaptiveAvgPool2d(1),
@@ -74,6 +76,8 @@ class _Darknet19(nn.Module):
         x = self.layer4(x)
         x = self.layer5(x)
 
+        x = self.dropout(x)
+        
         x = self.classifier(x)
         return x
 
