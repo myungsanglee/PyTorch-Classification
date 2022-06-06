@@ -5,6 +5,7 @@ from torchmetrics import Accuracy
 from utils.module_select import get_optimizer, get_scheduler
 from models.loss.focal_loss import FocalLoss
 
+
 class Classifier(pl.LightningModule):
     def __init__(self, model, cfg):
         super().__init__()
@@ -12,7 +13,6 @@ class Classifier(pl.LightningModule):
         self.save_hyperparameters(ignore='model')
         self.top_1 = Accuracy(top_k=1)
         self.top_5 = Accuracy(top_k=5)
-        # self.focal_loss = FocalLoss(reduction='mean')
         self.ce_loss = nn.CrossEntropyLoss()
 
     def forward(self, x):
@@ -25,8 +25,6 @@ class Classifier(pl.LightningModule):
         loss = self.ce_loss(y_pred, y)
 
         self.log('train_loss', loss, prog_bar=True, logger=True, on_epoch=True, on_step=False)
-        # self.log('train_top1', self.top_1(y_pred, y), logger=True, on_epoch=True, on_step=False)
-        # self.log('train_top5', self.top_5(y_pred, y), logger=True, on_epoch=True, on_step=False)
 
         return loss
 

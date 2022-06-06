@@ -60,7 +60,7 @@ class _Darknet19(nn.Module):
         self.layer4 = self._make_layers(layer4)
         self.layer5 = self._make_layers(layer5)
 
-        self.dropout = nn.Dropout()
+        self.dropout = nn.Dropout2d(p=0.8)
 
         self.classifier = nn.Sequential(
             Conv2dBnRelu(1024, num_classes, 1),
@@ -96,7 +96,7 @@ class _Darknet19(nn.Module):
 
 def darknet19(num_classes=1000, in_channels=3):
     model = _Darknet19(num_classes, in_channels)
-    weight_initialize(model)
+    # weight_initialize(model)
     return model
 
 
