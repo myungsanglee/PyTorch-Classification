@@ -60,7 +60,7 @@ class _Darknet19(nn.Module):
         self.layer4 = self._make_layers(layer4)
         self.layer5 = self._make_layers(layer5)
 
-        self.dropout = nn.Dropout2d(p=0.8)
+        self.dropout = nn.Dropout2d(p=0.5)
 
         self.classifier = nn.Sequential(
             Conv2dBnRelu(1024, num_classes, 1),

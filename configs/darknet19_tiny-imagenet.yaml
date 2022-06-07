@@ -1,5 +1,5 @@
 model : 'darknet19'
-dataset_name : 'tiny-imagenet'
+dataset_name : 'tiny-imagenet-v2'
 input_size: 64
 in_channels: 3
 num_classes : 200

@@ -5,6 +5,7 @@ from module.lr_scheduler import CosineAnnealingWarmUpRestarts, YoloLR
 from models.backbone.vgg import vgg16, vgg16_bn
 from models.backbone.darknet import darknet19
 from dataset.classfication.tiny_imagenet import TinyImageNet
+from dataset.classfication.tiny_imagenet_v2 import TinyImageNetV2
 
 
 def get_model(model_name):
@@ -18,7 +19,8 @@ def get_model(model_name):
 
 def get_data_module(dataset_name):
     dataset_dict = {
-        'tiny-imagenet': TinyImageNet
+        'tiny-imagenet': TinyImageNet,
+        'tiny-imagenet-v2': TinyImageNetV2
     }
     return dataset_dict.get(dataset_name)
 
