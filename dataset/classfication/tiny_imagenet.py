@@ -40,6 +40,8 @@ class TinyImageNetDataset(Dataset):
     def __getitem__(self, index):
         img_file = self.data[index]
         img = cv2.imread(img_file)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
         if self.is_train:
             label = self.train_list[img_file]
         else:
