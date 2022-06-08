@@ -1,6 +1,6 @@
 from torch import optim
 from torch.optim.lr_scheduler import MultiStepLR, CosineAnnealingWarmRestarts
-from module.lr_scheduler import CosineAnnealingWarmUpRestarts, YoloLR
+from module.lr_scheduler import CosineAnnealingWarmUpRestarts, YoloLR, Poly
 
 from models.backbone.vgg import vgg16, vgg16_bn
 from models.backbone.darknet import darknet19
@@ -43,7 +43,8 @@ def get_scheduler(scheduler_name, optim, **kwargs):
         'multi_step': MultiStepLR, 
         'cosine_annealing_warm_restarts': CosineAnnealingWarmRestarts,
         'cosine_annealing_warm_up_restarts': CosineAnnealingWarmUpRestarts,
-        'yolo_lr': YoloLR
+        'yolo_lr': YoloLR,
+        'poly': Poly
     }
     optimizer = scheduler_dict.get(scheduler_name)
     if optimizer:

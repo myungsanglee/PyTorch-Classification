@@ -90,3 +90,25 @@ class YoloLR(_LRScheduler):
 
         for param_group, lr in zip(self.optimizer.param_groups, self.get_lr()):
             param_group['lr'] = lr
+
+'''
+https://github.com/AlexeyAB/darknet/wiki/CFG-Parameters-in-the-%5Bnet%5D-section
+Yolo poly scheduler
+'''
+class Poly(_LRScheduler):
+    def __init__(self, optimizer, max_steps, power=4, last_epoch=-1):
+        self.max_steps = max_steps
+        self.power = power
+        super(Poly, self).__init__(optimizer, last_epoch)     
+    
+    def get_lr(self):
+        return [base_lr * pow(1-self.last_epoch/self.max_steps, self.power) for base_lr in self.base_lrs]
+
+    def step(self, epoch=None):
+        if epoch is None:
+            self.last_epoch += 1
+        else:
+            self.last_epoch = epoch
+
+        for param_group, lr in zip(self.optimizer.param_groups, self.get_lr()):
+            param_group['lr'] = lr

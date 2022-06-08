@@ -77,3 +77,8 @@ scheduler_options:
 #   burn_in: 800
 #   steps: [300000, 350000]
 #   scales: [0.1, 0.1]
+
+# scheduler: 'poly'
+# scheduler_options:
+#   max_steps: 800
+#   power: 4
