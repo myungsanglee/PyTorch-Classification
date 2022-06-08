@@ -34,24 +34,24 @@ devices: [0] # 'auto': use all, [0]: use 0 gpu, [0, 1]: use 0, 1 gpus
 #   lr: 0
 #   weight_decay: 1e-5
 
-# optimizer: 'adamw'
-# optimizer_options:
-#   lr: 0
-#   weight_decay: 1e-5
+optimizer: 'adamw'
+optimizer_options:
+  lr: 1e-1
+  weight_decay: 1e-5
 
 # optimizer: 'sgd'
+# optimizer_options:
+#   lr: 1e-1
+#   momentum: 0.9
+#   weight_decay: 1e-5
+
+# optimizer: 'rmsprop'
 # optimizer_options:
 #   lr: 0
 #   momentum: 0.9
 #   weight_decay: 1e-5
-
-optimizer: 'rmsprop'
-optimizer_options:
-  lr: 0
-  momentum: 0.9
-  weight_decay: 1e-5
-  eps: 0.0316
-  alpha: 0.9
+#   eps: 0.0316
+#   alpha: 0.9
 
 # scheduler: 'multi_step'
 # scheduler_options:
@@ -64,13 +64,13 @@ optimizer_options:
 #   T_mult: 2
 #   eta_min: 1e-3
 
-scheduler: 'cosine_annealing_warm_up_restarts'
-scheduler_options:
-  T_0: 4000
-  T_mult: 2
-  eta_max: 1e-3
-  T_up: 800
-  gamma: 0.96
+# scheduler: 'cosine_annealing_warm_up_restarts'
+# scheduler_options:
+#   T_0: 4000
+#   T_mult: 2
+#   eta_max: 1e-3
+#   T_up: 800
+#   gamma: 0.96
 
 # scheduler: 'yolo_lr'
 # scheduler_options:
@@ -78,7 +78,7 @@ scheduler_options:
 #   steps: [300000, 350000]
 #   scales: [0.1, 0.1]
 
-# scheduler: 'poly'
-# scheduler_options:
-#   max_steps: 800
-#   power: 4
+scheduler: 'poly'
+scheduler_options:
+  max_steps: 431000
+  power: 4
