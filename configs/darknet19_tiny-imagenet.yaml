@@ -34,16 +34,24 @@ devices: [0] # 'auto': use all, [0]: use 0 gpu, [0, 1]: use 0, 1 gpus
 #   lr: 0
 #   weight_decay: 1e-5
 
-optimizer: 'adamw'
-optimizer_options:
-  lr: 0
-  weight_decay: 1e-5
+# optimizer: 'adamw'
+# optimizer_options:
+#   lr: 0
+#   weight_decay: 1e-5
 
 # optimizer: 'sgd'
 # optimizer_options:
-#   lr: 1e-3
+#   lr: 0
 #   momentum: 0.9
 #   weight_decay: 1e-5
+
+optimizer: 'rmsprop'
+optimizer_options:
+  lr: 0
+  momentum: 0.9
+  weight_decay: 1e-5
+  eps: 0.0316
+  alpha: 0.9
 
 # scheduler: 'multi_step'
 # scheduler_options:
