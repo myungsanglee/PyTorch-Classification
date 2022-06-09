@@ -104,35 +104,30 @@ if __name__ == '__main__':
     input_size = 64
     in_channels = 3
     num_classes = 200
+
+    tmp_input = torch.randn(1, 3, 64, 64)
     
     model = darknet19(num_classes, in_channels)
     
     torchsummary.summary(model, (in_channels, input_size, input_size), batch_size=1, device='cpu')
     
-    # model = model.features[:17]
-    # torchsummary.summary(model, (3, input_size, input_size), batch_size=1, device='cpu')
-    
-    # print(list(model.children()))
-    # print(f'\n-------------------------------------------------------------\n')
-    # new_model = nn.Sequential(*list(model.children())[:-1])
-    # print(new_model.modules)
-    
-    # for idx, child in enumerate(model.children()):
-    #     print(child)
-    #     if idx == 0:
-    #         for i, param in enumerate(child.parameters()):
-    #             print(i, param)
-    #             param.requires_grad = False
-    #             if i == 4:
-    #                 break
+    with torch.no_grad():
+        pred = model(tmp_input)
+    print(pred.size())
+    print(pred[0][0])
 
-    # torchsummary.summary(model, (3, 64, 64), batch_size=1, device='cpu')
-    
-    # from torchvision import models
 
-    # model = models.resnet18(num_classes=200)
-    # models.vgg16
-    # # model = models.resnet50(num_classes=200)
-    # model = models.efficientnet_b0(num_classes=200)
-    # torchsummary.summary(model, (3, 64, 64), batch_size=1, device='cpu')
+    # Load Weights from ckpt by pytorch-lightning
+    ckpt_path = os.path.join(os.getcwd(), 'saved/darknet19_tiny-imagenet-v2/version_0/checkpoints/epoch=249-step=97749.ckpt')
+    checkpoint = torch.load(ckpt_path)
 
+    state_dict = checkpoint["state_dict"]
+    for key in list(state_dict):
+        state_dict[key.replace("model.", "")] = state_dict.pop(key)
+
+    model.load_state_dict(state_dict)
+
+    with torch.no_grad():
+        pred = model(tmp_input)
+    print(pred.size())
+    print(pred[0][0])    
