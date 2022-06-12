@@ -74,7 +74,7 @@ scheduler_options:
   T_0: 10000
   T_mult: 2
   eta_max: 1e-3
-  T_up: 500
+  T_up: 1000
   gamma: 0.96
 
 # scheduler: 'yolo_lr'
