@@ -7,6 +7,7 @@ from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint, St
 from pytorch_lightning.plugins import DDPPlugin
 import torchsummary
 import torch
+from torchvision.models import vgg16_bn
 
 from module.classifier import Classifier
 from utils.utility import make_model_name
@@ -37,9 +38,11 @@ def train(cfg):
 
     model = get_model(cfg['model'])(in_channels=cfg['in_channels'], num_classes=cfg['num_classes'])
 
-    model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+    # model = vgg16_bn(pretrained=False, num_classes=200)
+
+    # model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
     
-    # torchsummary.summary(model, (cfg['in_channels'], cfg['input_size'], cfg['input_size']), batch_size=1, device='cpu')
+    torchsummary.summary(model, (cfg['in_channels'], cfg['input_size'], cfg['input_size']), batch_size=1, device='cpu')
     
     model_module = Classifier(
         model=model,

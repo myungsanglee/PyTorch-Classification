@@ -4,7 +4,7 @@ input_size: 64
 in_channels: 3
 num_classes : 200
 
-epochs: 1000
+epochs: 500
 
 dataset_dir : '/home/fssv2/myungsang/datasets/tiny_imagenet/tiny-imagenet-200'
 workers: 32 # number of workers to generate data
@@ -34,20 +34,20 @@ devices: [0] # 'auto': use all, [0]: use 0 gpu, [0, 1]: use 0, 1 gpus
 #   lr: 0
 #   weight_decay: 1e-5
 
-optimizer: 'adamw'
-optimizer_options:
-  lr: 0
-  weight_decay: 1e-5
-
-# optimizer: 'sgd'
+# optimizer: 'adamw'
 # optimizer_options:
-#   lr: 1e-1
-#   momentum: 0.9
-#   weight_decay: 1e-5
+#   lr: 0
+#   weight_decay: 5e-4
+
+optimizer: 'sgd'
+optimizer_options:
+  lr: 1e-1
+  momentum: 0.9
+  weight_decay: 5e-4
 
 # optimizer: 'rmsprop'
 # optimizer_options:
-#   lr: 1e-1
+#   lr: 0
 #   momentum: 0.9
 #   weight_decay: 1e-5
 #   eps: 0.0316
@@ -69,13 +69,13 @@ optimizer_options:
 #   T_mult: 2
 #   eta_min: 1e-3
 
-scheduler: 'cosine_annealing_warm_up_restarts'
-scheduler_options:
-  T_0: 10000
-  T_mult: 2
-  eta_max: 1e-3
-  T_up: 1000
-  gamma: 0.96
+# scheduler: 'cosine_annealing_warm_up_restarts'
+# scheduler_options:
+#   T_0: 10000
+#   T_mult: 2
+#   eta_max: 1e-3
+#   T_up: 1000
+#   gamma: 0.96
 
 # scheduler: 'yolo_lr'
 # scheduler_options:
@@ -83,7 +83,7 @@ scheduler_options:
 #   steps: [300000, 350000]
 #   scales: [0.1, 0.1]
 
-# scheduler: 'poly'
-# scheduler_options:
-#   max_steps: 431000
-#   power: 4
+scheduler: 'poly'
+scheduler_options:
+  max_steps: 195500
+  power: 4

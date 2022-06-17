@@ -61,10 +61,10 @@ def vgg16_bn(in_channels, num_classes=1000):
 
 
 if __name__ == '__main__':
-    model = vgg16_bn(in_channels=3)
+    model = vgg16_bn(in_channels=3, num_classes=200)
     # print(model(torch.rand(1, 3, 64, 64)))
     print(model)
-    torchsummary.summary(model, (3, 448, 448), batch_size=1, device='cpu')
+    torchsummary.summary(model, (3, 64, 64), batch_size=1, device='cpu')
 
     # print(list(model.children()))
     # print(f'\n-------------------------------------------------------------\n')

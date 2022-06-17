@@ -111,23 +111,28 @@ if __name__ == '__main__':
     
     torchsummary.summary(model, (in_channels, input_size, input_size), batch_size=1, device='cpu')
     
-    with torch.no_grad():
-        pred = model(tmp_input)
-    print(pred.size())
-    print(pred[0][0])
+    from torchvision.models import vgg16_bn
+    model = vgg16_bn(pretrained=False, num_classes=200)
+
+    torchsummary.summary(model, (in_channels, input_size, input_size), batch_size=1, device='cpu')
+    
+    # with torch.no_grad():
+    #     pred = model(tmp_input)
+    # print(pred.size())
+    # print(pred[0][0])
 
 
     # Load Weights from ckpt by pytorch-lightning
-    ckpt_path = os.path.join(os.getcwd(), 'saved/darknet19_tiny-imagenet-v2/version_0/checkpoints/epoch=249-step=97749.ckpt')
-    checkpoint = torch.load(ckpt_path)
+    # ckpt_path = os.path.join(os.getcwd(), 'saved/darknet19_tiny-imagenet-v2/version_0/checkpoints/epoch=249-step=97749.ckpt')
+    # checkpoint = torch.load(ckpt_path)
 
-    state_dict = checkpoint["state_dict"]
-    for key in list(state_dict):
-        state_dict[key.replace("model.", "")] = state_dict.pop(key)
+    # state_dict = checkpoint["state_dict"]
+    # for key in list(state_dict):
+    #     state_dict[key.replace("model.", "")] = state_dict.pop(key)
 
-    model.load_state_dict(state_dict)
+    # model.load_state_dict(state_dict)
 
-    with torch.no_grad():
-        pred = model(tmp_input)
-    print(pred.size())
-    print(pred[0][0])    
+    # with torch.no_grad():
+    #     pred = model(tmp_input)
+    # print(pred.size())
+    # print(pred[0][0])    
