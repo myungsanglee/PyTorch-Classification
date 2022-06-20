@@ -60,11 +60,11 @@ class TinyImageNetV2(pl.LightningDataModule):
         
     def setup(self, stage=None):
         train_transforms = T.Compose([
-            T.RandomResizedCrop(self.input_size),
             T.RandomHorizontalFlip(),
             autoaugment.AutoAugment(autoaugment.AutoAugmentPolicy.IMAGENET),
+            T.RandomResizedCrop(self.input_size, (0.3, 1)),
             T.ToTensor(),
-            T.RandomErasing()
+            # T.RandomErasing()
         ])
 
         valid_transform = T.Compose([
