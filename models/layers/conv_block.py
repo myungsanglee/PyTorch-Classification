@@ -51,3 +51,22 @@ class Conv2dBn(nn.Module):
     def forward(self, x):
         y = self.conv(x)
         return self.bn(y)
+
+
+# Darknet53 Residual block
+class DarkResidualBlock(nn.Module):
+    def __init__(self, in_channels):
+        super(DarkResidualBlock, self).__init__()
+
+        reduced_channels = int(in_channels/2)
+
+        self.layer1 = Conv2dBnRelu(in_channels, reduced_channels, 1)
+        self.layer2 = Conv2dBnRelu(reduced_channels, in_channels, 3)
+
+    def forward(self, x):
+        residual = x
+
+        out = self.layer1(x)
+        out = self.layer2(out)
+        out += residual
+        return out

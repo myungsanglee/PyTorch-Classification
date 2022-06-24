@@ -3,7 +3,7 @@ from torch.optim.lr_scheduler import MultiStepLR, CosineAnnealingWarmRestarts, S
 from module.lr_scheduler import CosineAnnealingWarmUpRestarts, YoloLR, Poly
 
 from models.backbone.vgg import vgg16, vgg16_bn
-from models.backbone.darknet import darknet19
+from models.backbone.darknet import darknet19, darknet53
 from dataset.classfication.tiny_imagenet import TinyImageNet
 from dataset.classfication.tiny_imagenet_v2 import TinyImageNetV2
 
@@ -12,7 +12,8 @@ def get_model(model_name):
     model_dict = {
         'vgg16': vgg16,
         'vgg16_bn': vgg16_bn,
-        'darknet19': darknet19
+        'darknet19': darknet19,
+        'darknet53': darknet53
     }
     return model_dict.get(model_name)
 

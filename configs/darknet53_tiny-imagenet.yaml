@@ -1,0 +1,89 @@
+model : 'darknet53'
+dataset_name : 'tiny-imagenet-v2'
+input_size: 64
+in_channels: 3
+num_classes : 200
+
+epochs: 500
+
+dataset_dir : '/home/fssv2/myungsang/datasets/tiny_imagenet/tiny-imagenet-200'
+workers: 32 # number of workers to generate data
+batch_size: 256
+
+save_dir : './saved' # dir for saving log, weights
+save_freq: 5
+
+trainer_options:
+  check_val_every_n_epoch: 5
+
+# experimental_options:
+#   os: 'windows' # add this option if an error about NCCL occurs in windows
+#   callbacks:
+#     - 'SWA'
+
+accelerator: 'gpu' # 'auto', 'gpu', 'cpu'
+devices: [1] # 'auto': use all, [0]: use 0 gpu, [0, 1]: use 0, 1 gpus
+
+# optimizer: 'adam'
+# optimizer_options:
+#   lr: 1e-3
+#   weight_decay: 1e-5
+
+# optimizer: 'radam'
+# optimizer_options:
+#   lr: 0
+#   weight_decay: 1e-5
+
+# optimizer: 'adamw'
+# optimizer_options:
+#   lr: 0
+#   weight_decay: 5e-4
+
+optimizer: 'sgd'
+optimizer_options:
+  lr: 1e-1
+  momentum: 0.9
+  weight_decay: 5e-4
+
+# optimizer: 'rmsprop'
+# optimizer_options:
+#   lr: 0
+#   momentum: 0.9
+#   weight_decay: 1e-5
+#   eps: 0.0316
+#   alpha: 0.9
+
+# scheduler: 'multi_step'
+# scheduler_options:
+#   milestones: [12000, 24000]
+#   gamma: 0.1
+
+# scheduler: 'step'
+# scheduler_options:
+#   step_size: 12000
+#   gamma: 0.1
+
+# scheduler: 'cosine_annealing_warm_restarts'
+# scheduler_options:
+#   T_0: 50
+#   T_mult: 2
+#   eta_min: 1e-3
+
+# scheduler: 'cosine_annealing_warm_up_restarts'
+# scheduler_options:
+#   T_0: 10000
+#   T_mult: 2
+#   eta_max: 1e-3
+#   T_up: 1000
+#   gamma: 0.96
+
+# scheduler: 'yolo_lr'
+# scheduler_options:
+#   burn_in: 800
+#   steps: [300000, 350000]
+#   scales: [0.1, 0.1]
+
+scheduler: 'poly'
+scheduler_options:
+  max_steps: 195500
+  power: 4
